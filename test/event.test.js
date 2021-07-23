@@ -1,30 +1,31 @@
 import request from "supertest";
-import { app } from "../../app";
-import appConfig from "../../config/env";
-import { mongoose } from "../../config/mongoConnect";
-import { errors } from "../../config/error";
+import { app } from "../app";
+import appConfig from "../config/env";
+import { mongoose } from "../config/mongoConnect";
+import { errors } from "../config/error";
 
-const url = "/api/v1/auth/login";
+const url = "/api/v1/events";
 
-const loginInfo = {
-  username: appConfig.username,
-  password: appConfig.password
+const eventInfo = {
+  "name": "Event test",
+  "description": "This is description",
+  "startDate": "2021-11-01",
+  "endDate": "2021-12-01"
 };
 
 let token;
 
-describe("Auth Test", () => {
+describe("[POST] - Create Event", () => {
   afterAll(async () => {
     await mongoose.disconnect();
   });
 
-  it("POST /auth/login", async () => {
+  it("should return status code 200", async () => {
     const response = await request(app)
       .post(url)
-      .send(loginInfo);
+      .send(eventInfo);
     expect(response.statusCode).toBe(200);
-    expect(response.body.token).not.toBeNull();
-    token = response.body.token;
+    expect(response.body).not.toBeNull();
   });
 
   it("should return error PASSWORD_IS_REQUIRED with status code 400", async () => {
