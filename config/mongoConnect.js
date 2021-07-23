@@ -10,10 +10,6 @@ mongoose.connection.on("connected", () => {
   log("MongoDB Connection Established");
 });
 
-mongoose.connection.on("reconnected", () => {
-  log("MongoDB Connection Reestablished");
-});
-
 mongoose.connection.on("disconnected", () => {
   log("MongoDB Connection Disconnected");
 });
@@ -47,4 +43,4 @@ const connectMongo = async () => {
   }
 };
 
-export default connectMongo;
+export { mongoose, connectMongo };

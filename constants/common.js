@@ -1,5 +1,5 @@
 module.exports.VALIDATOR_TYPE = {
-  BODY: 'body',
-  PARAMS: 'params',
-  QUERY: 'query'
+  BODY: "body",
+  PARAMS: "params",
+  QUERY: "query"
 };
