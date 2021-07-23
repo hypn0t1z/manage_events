@@ -2,12 +2,10 @@ import express from "express";
 import bodyParser from "body-parser";
 import morgan from "morgan";
 import mainRouter from "./controller/index";
-import connectMongo from "./config/mongoConnect";
+import { connectMongo } from "./config/mongoConnect";
 
 const app = express();
 
-// Production enviroment
-const isProduction = process.env.NODE_ENV === "production";
 app.use(bodyParser.json());
 
 //https debug
@@ -19,7 +17,10 @@ connectMongo();
 app.use("/api/v1", mainRouter);
 
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Server is running on isProductionss => ${isProduction}`);
-  console.log(`Server is running on PORT ${PORT}`);
-});
+if (process.env.NODE_ENV !== "test") {
+  app.listen(PORT, () => {
+    console.log(`Server is running on PORT ${PORT}`);
+  });
+}
+
+export { app };
