@@ -28,17 +28,23 @@ mongoose.connection.on("error", error => {
 });
 
 mongoose.set("debug", appConfig.mongoDebug);
+
 const connectMongo = async () => {
-  let connectionuri = appConfig.dbConnectionString;
-  await mongoose.connect(connectionuri, {
-    //autoReconnect: true,
-    //reconnectTries: 1000000,
-    //reconnectInterval: 3000,
-    useNewUrlParser: true,
-    useFindAndModify: false,
-    useCreateIndex: true,
-    useUnifiedTopology: true
-  });
+  try {
+    let connectionUri = appConfig.dbConnectionString;
+    await mongoose.connect(connectionUri, {
+      //autoReconnect: true,
+      //reconnectTries: 1000000,
+      //reconnectInterval: 3000,
+      useNewUrlParser: true,
+      useFindAndModify: false,
+      useCreateIndex: true,
+      useUnifiedTopology: true
+    });
+  } catch (e) {
+    log("MongoDB ERROR: " + e);
+    throw e;
+  }
 };
 
 export default connectMongo;
