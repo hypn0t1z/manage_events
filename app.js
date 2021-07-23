@@ -1,8 +1,8 @@
 import express from "express";
 import bodyParser from "body-parser";
 import morgan from "morgan";
-import mainRouter from "./routes";
-import connectMongo from "./config/mongo-connect";
+import mainRouter from "./controller/index";
+import connectMongo from "./config/mongoConnect";
 
 const app = express();
 
@@ -16,7 +16,7 @@ app.use(morgan("dev"));
 //Connect Mongo
 connectMongo();
 
-app.use("/", mainRouter);
+app.use("/api/v1", mainRouter);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
