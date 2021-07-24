@@ -18,7 +18,7 @@ event.post(
 );
 
 // GetAll Data
-event.get("/", asyncWrapper(eventService.findAll));
+event.get("/", authorized(), asyncWrapper(eventService.getEndedEvents));
 
 // GetBy ID
 event.get(
