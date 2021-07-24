@@ -35,7 +35,7 @@ eventRepository.findById = async ({ id, projection, options }) => {
  * @param options
  * @returns {Promise<Query<UpdateWriteOpResult, Document<any, any, unknown>, {}, unknown>>}
  */
-eventRepository.updateOne = async ({ id, data, options = { new: true } }) => {
+eventRepository.updateOne = async ({ id, data, options }) => {
   const { name, startDate, dueDate, description } = data;
   const dataUpdate = {};
 
@@ -47,6 +47,16 @@ eventRepository.updateOne = async ({ id, data, options = { new: true } }) => {
   await eventModel.updateOne({ _id: id }, dataUpdate, options);
 
   return dataUpdate;
+};
+
+/**
+ * Delete event
+ * @param id
+ * @param options
+ * @returns {Promise<{}>}
+ */
+eventRepository.deleteOne = async ({ id, options }) => {
+  return eventModel.deleteOne({ _id: id }, options);
 };
 
 export default eventRepository;

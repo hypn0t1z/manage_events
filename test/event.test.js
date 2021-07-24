@@ -24,12 +24,18 @@ const commonHeaders = {
 
 let eventId;
 
+/**
+ * Event APIs
+ */
 describe("Event APIs", () => {
   afterAll(async () => {
     await eventModel.deleteMany({});
     await mongoose.disconnect();
   });
 
+  /**
+   * Create Event
+   */
   describe("[POST] - Create Event", () => {
     it("should return status code 200", async () => {
       const response = await request(app)
@@ -68,6 +74,9 @@ describe("Event APIs", () => {
     });
   });
 
+  /**
+   * Get event detail
+   */
   describe("[GET] - Get Event Detail", () => {
     it("should return status code 200", async () => {
       const response = await request(app)
@@ -100,6 +109,9 @@ describe("Event APIs", () => {
     });
   });
 
+  /**
+   * Update event
+   */
   describe("[PUT] - Update Event", () => {
     it("should return status code 200", async () => {
       const response = await request(app)
@@ -142,6 +154,41 @@ describe("Event APIs", () => {
         .put(`${url}/60fb8cf2a38a4f2eb156296e`)
         .set(commonHeaders)
         .send(eventInfo);
+      expect(response.statusCode).toBe(404);
+      expect(response.body.code).toEqual(errors.EVENT_NOT_FOUND.code);
+    });
+
+    it("should return error NOT_AUTHENTICATE with status code 401", async () => {
+      const response = await request(app).get(`${url}/${eventId}`);
+      expect(response.statusCode).toBe(401);
+      expect(response.body.code).toEqual(errors.NOT_AUTHENTICATE.code);
+    });
+  });
+
+  /**
+   * Delete event
+   */
+  describe("[DELETE] - Delete Event", () => {
+    it("should return status code 200", async () => {
+      const response = await request(app)
+        .delete(`${url}/${eventId}`)
+        .set(commonHeaders);
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toEqual(true);
+    });
+
+    it("should return error when objectId invalid, with status code 400", async () => {
+      const response = await request(app)
+        .delete(`${url}/60fb8cf2a38a4f2eb156296e1`)
+        .set(commonHeaders);
+      expect(response.statusCode).toBe(400);
+      expect(response.body.name).toEqual("eventId");
+    });
+
+    it("should return error EVENT_NOT_FOUND with status code 404", async () => {
+      const response = await request(app)
+        .delete(`${url}/60fb8cf2a38a4f2eb156296e`)
+        .set(commonHeaders);
       expect(response.statusCode).toBe(404);
       expect(response.body.code).toEqual(errors.EVENT_NOT_FOUND.code);
     });

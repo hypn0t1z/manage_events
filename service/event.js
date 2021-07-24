@@ -63,4 +63,28 @@ eventService.updateEvent = async (req, res) => {
   }
 };
 
+/**
+ * Delete event
+ * @param req
+ * @param res
+ * @returns {Promise<*>}
+ */
+eventService.deleteEvent = async (req, res) => {
+  try {
+    const id = req.params.eventId;
+    let event = await eventRepository.findById({ id });
+
+    if (!event) {
+      return res.status(httpStatus.NOT_FOUND).json(errors.EVENT_NOT_FOUND);
+    }
+
+    await eventRepository.deleteOne({ id });
+
+    return res.json(true);
+  } catch (error) {
+    logger.error(`Error_delete_event: ${error}`);
+    return res.status(500).json(errors.INTERNAL_SERVER_ERROR);
+  }
+};
+
 export default eventService;
