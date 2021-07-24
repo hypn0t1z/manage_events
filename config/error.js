@@ -3,6 +3,10 @@ export const errors = {
     code: 1,
     message: "USER_NOT_FOUND"
   },
+  NOT_AUTHENTICATE: {
+    code: 401,
+    message: "NOT_AUTHENTICATE"
+  },
   INTERNAL_SERVER_ERROR: {
     code: 500,
     message: "INTERNAL_SERVER_ERROR"
