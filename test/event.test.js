@@ -4,7 +4,7 @@ import appConfig from "../config/env";
 import { mongoose } from "../config/mongoConnect";
 import { errors } from "../config/error";
 import jwt from "jsonwebtoken";
-import {eventModel} from "../model/event";
+import { eventModel } from "../model/event";
 
 const url = "/api/v1/events";
 
@@ -14,9 +14,7 @@ const eventInfo = {
   startDate: "2021-11-01",
   dueDate: "2021-12-01"
 };
-const token = jwt.sign(
-  { username: appConfig.username },
-  appConfig.jwt_key, {
+const token = jwt.sign({ username: appConfig.username }, appConfig.jwt_key, {
   expiresIn: appConfig.jwt_expiration
 });
 const commonHeaders = {
@@ -28,14 +26,14 @@ let eventId;
 
 describe("Event APIs", () => {
   afterAll(async () => {
-    await eventModel.deleteMany({})
+    await eventModel.deleteMany({});
     await mongoose.disconnect();
   });
 
   describe("[POST] - Create Event", () => {
     it("should return status code 200", async () => {
       const response = await request(app)
-        .post(`${url}/create`)
+        .post(`${url}`)
         .set(commonHeaders)
         .send(eventInfo);
       expect(response.statusCode).toBe(200);
@@ -45,7 +43,7 @@ describe("Event APIs", () => {
 
     it("should return error DUEDATE_IS_REQUIRED with status code 400", async () => {
       const response = await request(app)
-        .post(`${url}/create`)
+        .post(`${url}`)
         .set(commonHeaders)
         .send({
           name: "Event test",
@@ -58,7 +56,7 @@ describe("Event APIs", () => {
 
     it("should return error NOT_AUTHENTICATE with status code 401", async () => {
       const response = await request(app)
-        .post(`${url}/create`)
+        .post(`${url}`)
         .send({
           name: "Event test",
           description: "This is description",
@@ -70,7 +68,7 @@ describe("Event APIs", () => {
     });
   });
 
-  describe("[POST] - Get Event Detail", () => {
+  describe("[GET] - Get Event Detail", () => {
     it("should return status code 200", async () => {
       const response = await request(app)
         .get(`${url}/${eventId}`)
@@ -92,12 +90,64 @@ describe("Event APIs", () => {
         .get(`${url}/${eventId}1`)
         .set(commonHeaders);
       expect(response.statusCode).toBe(400);
-      expect(response.body.name).toEqual('eventId');
+      expect(response.body.name).toEqual("eventId");
     });
 
     it("should return error NOT_AUTHENTICATE with status code 401", async () => {
+      const response = await request(app).get(`${url}/${eventId}`);
+      expect(response.statusCode).toBe(401);
+      expect(response.body.code).toEqual(errors.NOT_AUTHENTICATE.code);
+    });
+  });
+
+  describe("[PUT] - Update Event", () => {
+    it("should return status code 200", async () => {
       const response = await request(app)
-        .get(`${url}/${eventId}`);
+        .put(`${url}/${eventId}`)
+        .set(commonHeaders)
+        .send({
+          name: "hungdb123",
+          dueDate: "2021-12-01",
+          description: "This is description",
+          startDate: "2021-11-01"
+        });
+      expect(response.statusCode).toBe(200);
+      expect(response.body).not.toBeNull();
+    });
+
+    it("should return error NAME_IS_REQUIRED with status code 400", async () => {
+      const response = await request(app)
+        .put(`${url}/${eventId}`)
+        .set(commonHeaders)
+        .send({
+          dueDate: "2021-12-01",
+          description: "This is description",
+          startDate: "2021-11-01"
+        });
+      expect(response.statusCode).toBe(400);
+      expect(response.body.code).toEqual("NAME_IS_REQUIRED");
+    });
+
+    it("should return error when objectId invalid, with status code 400", async () => {
+      const response = await request(app)
+        .put(`${url}/60fb8cf2a38a4f2eb156296e1`)
+        .set(commonHeaders)
+        .send(eventInfo);
+      expect(response.statusCode).toBe(400);
+      expect(response.body.name).toEqual("eventId");
+    });
+
+    it("should return error EVENT_NOT_FOUND with status code 404", async () => {
+      const response = await request(app)
+        .put(`${url}/60fb8cf2a38a4f2eb156296e`)
+        .set(commonHeaders)
+        .send(eventInfo);
+      expect(response.statusCode).toBe(404);
+      expect(response.body.code).toEqual(errors.EVENT_NOT_FOUND.code);
+    });
+
+    it("should return error NOT_AUTHENTICATE with status code 401", async () => {
+      const response = await request(app).get(`${url}/${eventId}`);
       expect(response.statusCode).toBe(401);
       expect(response.body.code).toEqual(errors.NOT_AUTHENTICATE.code);
     });
