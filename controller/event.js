@@ -35,6 +35,10 @@ event.put(
 );
 
 // Delete
-event.delete("/:eventId", asyncWrapper(eventService.delete));
+event.delete(
+  "/:eventId",
+  [checkIdValidator, authorized()],
+  asyncWrapper(eventService.deleteEvent)
+);
 
 export { event };
