@@ -8,16 +8,16 @@ const eventSchema = new schema({
     required: true
   },
   startDate: {
-    type: String,
+    type: Date,
     required: true
   },
   dueDate: {
-    type: String,
+    type: Date,
     required: true
   },
   description: {
     type: String,
-    required: true
+    required: false
   }
 });
 

@@ -1,8 +1,8 @@
 import request from "supertest";
-import { app } from "../../app";
-import appConfig from "../../config/env";
-import { mongoose } from "../../config/mongoConnect";
-import { errors } from "../../config/error";
+import { app } from "../app";
+import appConfig from "../config/env";
+import { mongoose } from "../config/mongoConnect";
+import { errors } from "../config/error";
 
 const url = "/api/v1/auth/login";
 
@@ -10,8 +10,6 @@ const loginInfo = {
   username: appConfig.username,
   password: appConfig.password
 };
-
-let token;
 
 describe("Auth Test", () => {
   afterAll(async () => {
@@ -24,7 +22,7 @@ describe("Auth Test", () => {
       .send(loginInfo);
     expect(response.statusCode).toBe(200);
     expect(response.body.token).not.toBeNull();
-    token = response.body.token;
+    global.token = response.body.token;
   });
 
   it("should return error PASSWORD_IS_REQUIRED with status code 400", async () => {
