@@ -71,18 +71,37 @@ eventService.updateEvent = async (req, res) => {
  */
 eventService.deleteEvent = async (req, res) => {
   try {
-    const id = req.params.eventId;
-    let event = await eventRepository.findById({ id });
+    const _id = req.params.eventId;
+    let event = await eventRepository.findById({ id: _id });
 
     if (!event) {
       return res.status(httpStatus.NOT_FOUND).json(errors.EVENT_NOT_FOUND);
     }
 
-    await eventRepository.deleteOne({ id });
+    await eventRepository.deleteOne({ conditions: { _id } });
 
     return res.json(true);
   } catch (error) {
     logger.error(`Error_delete_event: ${error}`);
+    return res.status(500).json(errors.INTERNAL_SERVER_ERROR);
+  }
+};
+
+/**
+ * Get list of ended events
+ * @param req
+ * @param res
+ * @returns {Promise<*>}
+ */
+eventService.getEndedEvents = async (req, res) => {
+  try {
+    const conditions = {
+      dueDate: { $lte: new Date() }
+    };
+    const events = await eventRepository.paginate({ conditions });
+    return res.json(events);
+  } catch (error) {
+    logger.error(`Error_get_list_ended_events: ${error}`);
     return res.status(500).json(errors.INTERNAL_SERVER_ERROR);
   }
 };
