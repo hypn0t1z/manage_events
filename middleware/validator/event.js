@@ -1,6 +1,15 @@
 import Joi from "joi";
+import joiObjectId from "joi-objectid";
 import { validator } from "./index";
 import { VALIDATOR_TYPE } from "../../constants/common";
+
+Joi.objectId = joiObjectId(Joi)
+
+export const checkIdValidator = validator(
+  Joi.object().keys({
+    eventId: Joi.objectId().required()
+  }), VALIDATOR_TYPE.PARAMS
+);
 
 export const createEventValidator = validator(
   Joi.object().keys({

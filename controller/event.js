@@ -1,8 +1,8 @@
 import express from "express";
 import eventService from "../service/event";
 import { asyncWrapper } from "../utils/asyncWrapper";
-import { createEventValidator } from "../middleware/validator/event";
 import { authorized } from "../middleware/auth.middleware";
+import { checkIdValidator, createEventValidator } from "../middleware/validator/event";
 
 const event = express.Router();
 
@@ -17,7 +17,7 @@ event.post(
 event.get("/", asyncWrapper(eventService.findAll));
 
 // GetBy ID
-event.get("/:eventId", asyncWrapper(eventService.findOne));
+event.get("/:eventId", [checkIdValidator, authorized()], asyncWrapper(eventService.getEventDetail));
 
 // update by ID
 event.put("/:eventId", asyncWrapper(eventService.update));
