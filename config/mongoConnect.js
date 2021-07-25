@@ -19,7 +19,7 @@ mongoose.connection.on("close", () => {
 });
 
 mongoose.connection.on("error", error => {
-  log("MongoDB ERROR: " + error);
+  log(`MongoDB ERROR: ${  error}`);
   process.exit(1);
 });
 
@@ -27,18 +27,18 @@ mongoose.set("debug", appConfig.mongoDebug);
 
 const connectMongo = async () => {
   try {
-    let connectionUri = appConfig.dbConnectionString;
+    const connectionUri = appConfig.dbConnectionString;
     await mongoose.connect(connectionUri, {
-      //autoReconnect: true,
-      //reconnectTries: 1000000,
-      //reconnectInterval: 3000,
+      // autoReconnect: true,
+      // reconnectTries: 1000000,
+      // reconnectInterval: 3000,
       useNewUrlParser: true,
       useFindAndModify: false,
       useCreateIndex: true,
       useUnifiedTopology: true
     });
   } catch (e) {
-    log("MongoDB ERROR: " + e);
+    log(`MongoDB ERROR: ${  e}`);
     throw e;
   }
 };

@@ -5,5 +5,7 @@ script:
   - echo '*** Starting build ***'
   - echo 'install dependencies'
   - npm install
+  - echo 'Run Eslint'
+  - eslint ./
   - echo 'Running test'
-  - npm test
+  - npm run test

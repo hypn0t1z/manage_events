@@ -6,15 +6,12 @@ import { errors } from "../../config/error";
  * @param property
  * @returns {function(*, *, *): Promise<*|undefined>}
  */
-export const validator = (schema, property) => {
-  return async (req, res, next) => {
-    const { error } = await schema.validate(req[property], {
-      stripUnknown: true
-    });
-    if (!error) {
-      return next();
-    }
-    const { details } = error;
+export const validator = (schema, property) => async (req, res, next) => {
+  const { error } = await schema.validate(req[property], {
+    stripUnknown: true
+  });
+  if (error) {
+    const {details} = error;
     if (details[0]) {
       const name = details[0].context.key;
 
@@ -24,10 +21,11 @@ export const validator = (schema, property) => {
         .toUpperCase();
       code = (errors[code] && errors[code].code) || code;
 
-      let { message } = details[0];
+      let {message} = details[0];
       message = (errors[message] && errors[message].message) || message;
 
-      return res.status(400).json({ code, name, message });
+      return res.status(400).json({code, name, message});
     }
-  };
+  }
+  return next();
 };

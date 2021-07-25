@@ -1,0 +1,43 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true,
+        "jest": true
+    },
+    "extends": [
+        "airbnb-base",
+        "prettier"
+    ],
+    "parser": "babel-eslint",
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "ecmaFeatures": {
+            "experimentalObjectRestSpread": true
+        }
+    },
+    "rules": {
+        "no-restricted-syntax": "off",
+        "no-await-in-loop": "off",
+        "no-unused-expressions": "off",
+        "quotes": [
+            "error",
+            "double"
+        ],
+        "comma-dangle": [
+            "error",
+            "never"
+        ],
+        "import/prefer-default-export": "off",
+        "arrow-parens": "off",
+        "implicit-arrow-linebreak": "off",
+        "prefer-arrow-callback": "off",
+        "import/named": "off",
+        "new-cap": "off",
+        "import/no-named-as-default": "off",
+        "import/no-named-as-default-member": "off",
+        "import/no-dynamic-require": "off",
+        "no-underscore-dangle": "off",
+        "no-nested-ternary": "off",
+        "class-methods-use-this": "off"
+    }
+}
