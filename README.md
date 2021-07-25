@@ -2,17 +2,19 @@
 
 # Overview
 REST APIs in Node.js using ES6 and Express with Code Coverage and JWT Authentication.
-
-# Features
- * babel v7
- * Express
- * bcrypt
- * jsonwebtoken
- * mongoose
  
 # Requirements
  * node v12
- * mongodb compass
+ * Use ExpressJS 4x, MongoDB 4x
+ * Must have unit tests for all include integration test
+ * Use GitHub to store your code with Travis integration
+ 
+# Database
+ * Use MongoDB Atlas
+
+# User
+ * username: hungdb
+ * passsword: 123123
  
 # Installation
  * `npm install`
