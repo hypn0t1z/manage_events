@@ -1,7 +1,7 @@
 import request from "supertest";
 import { app } from "../app";
 import appConfig from "../config/env";
-import { mongoose, connectMongo } from "../config/mongoConnect";
+import mongoose from "mongoose";
 import { errors } from "../config/error";
 import jwt from "jsonwebtoken";
 import { eventModel } from "../model/event";
@@ -28,8 +28,17 @@ let eventId;
  * Event APIs
  */
 describe("Event APIs", () => {
-  beforeEach(async() => {
-    await connectMongo();
+  beforeAll(async() => {
+    let connectionUri = appConfig.dbConnectionString;
+    await mongoose.connect(connectionUri, {
+      //autoReconnect: true,
+      //reconnectTries: 1000000,
+      //reconnectInterval: 3000,
+      useNewUrlParser: true,
+      useFindAndModify: false,
+      useCreateIndex: true,
+      useUnifiedTopology: true
+    });
   });
 
   afterAll(async () => {

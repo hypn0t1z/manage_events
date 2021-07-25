@@ -21,7 +21,6 @@ const eventSchema = new schema({
   }
 });
 
-const skipInit = process.env.NODE_ENV === "test";
-const eventModel = mongoose.model("event", eventSchema, "event", skipInit);
+const eventModel = mongoose.model("event", eventSchema);
 
 export { eventModel };
