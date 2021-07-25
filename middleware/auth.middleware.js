@@ -2,8 +2,7 @@ import jwt from "jsonwebtoken";
 import appConfig from "../config/env";
 import { errors } from "../config/error";
 
-export const authorized = () => {
-  return async (req, res, next) => {
+export const authorized = () => async (req, res, next) => {
     try {
       let token = req.headers.authorization;
       token = token.split(" ");
@@ -16,4 +15,3 @@ export const authorized = () => {
       return res.status(401).json(errors.NOT_AUTHENTICATE);
     }
   };
-};

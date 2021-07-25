@@ -39,39 +39,35 @@ class BaseRepository {
     limit,
     page
   }) {
-    try {
-      const limitPaginate =
-        limit && !isNaN(limit) && Number(limit) >= 0
-          ? limit > PAGINATION_MAX
+    const limitPaginate =
+        limit && Number(limit) >= 0
+            ? limit > PAGINATION_MAX
             ? PAGINATION_MAX
             : Number(limit)
-          : PAGINATION;
+            : PAGINATION;
 
-      const pagePaginate = page && !isNaN(limit) && +page > 0 ? +page : 1;
-      const promises = await Promise.all([
-        this.model.countDocuments(conditions),
-        this.model
+    const pagePaginate = page && +page > 0 ? +page : 1;
+    const promises = await Promise.all([
+      this.model.countDocuments(conditions),
+      this.model
           .find(conditions, projection, options)
           .populate(populate || "")
           .sort(sort)
           .skip((pagePaginate - 1) * limitPaginate)
           .limit(limitPaginate)
           .lean()
-      ]);
+    ]);
 
-      const total = promises[0];
-      const pages = Math.ceil(Number(total) / limitPaginate);
+    const total = promises[0];
+    const pages = Math.ceil(Number(total) / limitPaginate);
 
-      return {
-        data: promises[1],
-        limit: limitPaginate,
-        total,
-        page: pagePaginate,
-        pages
-      };
-    } catch (e) {
-      throw e;
-    }
+    return {
+      data: promises[1],
+      limit: limitPaginate,
+      total,
+      page: pagePaginate,
+      pages
+    };
   }
 
   /**

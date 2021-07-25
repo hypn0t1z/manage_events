@@ -13,7 +13,7 @@ const eventService = {};
  */
 eventService.createEvent = async (req, res) => {
   try {
-    let event = await eventRepository.createEvent(req.body);
+    const event = await eventRepository.createEvent(req.body);
     return res.json(event);
   } catch (error) {
     logger.error(`Error_create_event: ${error}`);
@@ -29,7 +29,7 @@ eventService.createEvent = async (req, res) => {
  */
 eventService.getEventDetail = async (req, res) => {
   try {
-    let event = await eventRepository.findById({
+    const event = await eventRepository.findById({
       id: req.params.eventId
     });
     return res.json(event);
@@ -48,7 +48,7 @@ eventService.getEventDetail = async (req, res) => {
 eventService.updateEvent = async (req, res) => {
   try {
     const id = req.params.eventId;
-    let event = await eventRepository.findById({ id });
+    const event = await eventRepository.findById({ id });
 
     if (!event) {
       return res.status(httpStatus.NOT_FOUND).json(errors.EVENT_NOT_FOUND);
@@ -72,7 +72,7 @@ eventService.updateEvent = async (req, res) => {
 eventService.deleteEvent = async (req, res) => {
   try {
     const _id = req.params.eventId;
-    let event = await eventRepository.findById({ id: _id });
+    const event = await eventRepository.findById({ id: _id });
 
     if (!event) {
       return res.status(httpStatus.NOT_FOUND).json(errors.EVENT_NOT_FOUND);
