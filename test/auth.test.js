@@ -1,7 +1,6 @@
 import request from "supertest";
 import { app } from "../app";
 import appConfig from "../config/env";
-import { mongoose } from "../config/mongoConnect";
 import { errors } from "../config/error";
 
 const url = "/api/v1/auth/login";
@@ -12,10 +11,6 @@ const loginInfo = {
 };
 
 describe("Auth Test", () => {
-  afterAll(async () => {
-    await mongoose.disconnect();
-  });
-
   it("POST /auth/login", async () => {
     const response = await request(app)
       .post(url)

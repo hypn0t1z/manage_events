@@ -11,13 +11,13 @@ app.use(bodyParser.json());
 //https debug
 app.use(morgan("dev"));
 
-//Connect Mongo
-connectMongo();
-
 app.use("/api/v1", mainRouter);
 
 const PORT = process.env.PORT || 8080;
 if (process.env.NODE_ENV !== "test") {
+  //Connect Mongo
+  connectMongo();
+
   app.listen(PORT, () => {
     console.log(`Server is running on PORT ${PORT}`);
   });
