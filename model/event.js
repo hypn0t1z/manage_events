@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const schema = mongoose.Schema;
 
+// Store all the events in this collection
 const eventSchema = new schema({
   name: {
     type: String,
