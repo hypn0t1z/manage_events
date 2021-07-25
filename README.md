@@ -17,3 +17,9 @@ REST APIs in Node.js using ES6 and Express with Code Coverage and JWT Authentica
 # Installation
  * `npm install`
  * `npm run dev` Rus as Development
+
+# Run test
+ * `npm run test`
+
+# Run Code Coverage
+ * `npm run coverage`
