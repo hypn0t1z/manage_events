@@ -6,4 +6,4 @@ script:
   - echo 'install dependencies'
   - npm install
   - echo 'Running test'
-  - npm test
+  - npm run test

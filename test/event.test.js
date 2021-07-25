@@ -1,7 +1,7 @@
 import request from "supertest";
 import { app } from "../app";
 import appConfig from "../config/env";
-import { mongoose } from "../config/mongoConnect";
+import { mongoose, connectMongo } from "../config/mongoConnect";
 import { errors } from "../config/error";
 import jwt from "jsonwebtoken";
 import { eventModel } from "../model/event";
@@ -28,9 +28,13 @@ let eventId;
  * Event APIs
  */
 describe("Event APIs", () => {
+  beforeEach(async() => {
+    await connectMongo();
+  });
+
   afterAll(async () => {
     await eventModel.deleteMany({});
-    await mongoose.disconnect();
+    await mongoose.connection.close();
   });
 
   /**

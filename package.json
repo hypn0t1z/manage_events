@@ -12,8 +12,13 @@
     "dev": "cross-env NODE_ENV=development npm-run-all server",
     "prod": "npm-run-all clean build",
     "format": "prettier --write \"./**/*.js\"",
-    "test": "jest --detectOpenHandles",
-    "test:watch": "jest --forceExit --detectOpenHandles  --watchAll --maxWorkers=1"
+    "test": "jest --forceExit --detectOpenHandles --testTimeout=100000",
+    "test:watch": "jest --forceExit --detectOpenHandles  --watchAll --maxWorkers=1",
+    "coverage": "npm test --coverage"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "coverageReporters": ["json", "html"]
   },
   "keywords": [],
   "author": "",
